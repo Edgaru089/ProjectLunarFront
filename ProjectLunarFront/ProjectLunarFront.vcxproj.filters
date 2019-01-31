@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="LunarPhase">
+      <UniqueIdentifier>{d6c9d01d-9f87-4df4-b87e-40fbeddd409a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System">
+      <UniqueIdentifier>{d3eef49e-a523-4944-9d5c-91bfb1d3548a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Judging">
+      <UniqueIdentifier>{21027b42-20bf-4460-b72c-17dc6a1c6382}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Base">
+      <UniqueIdentifier>{ad275d21-49ef-43b7-8433-f94d7825a639}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data">
+      <UniqueIdentifier>{008763fe-f9a3-425b-987e-91fac98cc40d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Web">
+      <UniqueIdentifier>{9be70314-a7d9-465a-a636-884c7ebbee92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="LunarPhase\SFNUL">
+      <UniqueIdentifier>{bd3e38d4-de75-4a3a-94ed-d474f40fc8e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="LunarPhase\ThreadPool">
+      <UniqueIdentifier>{ede5f834-5602-4bea-a47a-5958e28e84c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="LunarPhase\ThreadPool\Impl">
+      <UniqueIdentifier>{a0c404e5-3b47-436a-b834-3c8db0324479}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="HTTPParser.hpp">
+      <Filter>LunarPhase</Filter>
+    </ClInclude>
+    <ClInclude Include="HTTPResponseWrapper.hpp">
+      <Filter>LunarPhase</Filter>
+    </ClInclude>
+    <ClInclude Include="Instance.hpp">
+      <Filter>LunarPhase</Filter>
+    </ClInclude>
+    <ClInclude Include="BuildCounter.hpp">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="LogSystem.hpp">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="Main.hpp">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="StringParser.hpp">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="Version.hpp">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="Lockable.hpp">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="JudgeWorker.hpp">
+      <Filter>Judging</Filter>
+    </ClInclude>
+    <ClInclude Include="JudgeRecord.hpp">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="StringDatabase.hpp">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Config.hpp">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Problem.hpp">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SFNUL\HTTP.hpp">
+      <Filter>LunarPhase\SFNUL</Filter>
+    </ClInclude>
+    <ClInclude Include="thread_pool\thread_pool.hpp">
+      <Filter>LunarPhase\ThreadPool</Filter>
+    </ClInclude>
+    <ClInclude Include="thread_pool\thread_pool\thread_pool.hpp">
+      <Filter>LunarPhase\ThreadPool\Impl</Filter>
+    </ClInclude>
+    <ClInclude Include="thread_pool\thread_pool\worker.hpp">
+      <Filter>LunarPhase\ThreadPool\Impl</Filter>
+    </ClInclude>
+    <ClInclude Include="thread_pool\thread_pool\thread_pool_options.hpp">
+      <Filter>LunarPhase\ThreadPool\Impl</Filter>
+    </ClInclude>
+    <ClInclude Include="thread_pool\thread_pool\mpmc_bounded_queue.hpp">
+      <Filter>LunarPhase\ThreadPool\Impl</Filter>
+    </ClInclude>
+    <ClInclude Include="thread_pool\thread_pool\fixed_function.hpp">
+      <Filter>LunarPhase\ThreadPool\Impl</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="HTTPResponseWrapper.cpp">
+      <Filter>LunarPhase</Filter>
+    </ClCompile>
+    <ClCompile Include="Instance.cpp">
+      <Filter>LunarPhase</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="MainF.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="JudgeWorker.cpp">
+      <Filter>Judging</Filter>
+    </ClCompile>
+    <ClCompile Include="SFNUL\HTTP.cpp">
+      <Filter>LunarPhase\SFNUL</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
