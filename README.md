@@ -15,5 +15,3 @@ License: MIT
 Incorporated modified code from [SFNUL](https://github.com/binary1248/SFNUL) - under the Mozilla Public License 2.0
 
 Incorporated modified code from the [Lemon Project](https://code.google.com/archive/p/project-lemon/) - under the GPLv3
-
-Incorporated modified code from a [High performance C++11 thread pool](https://github.com/inkooboo/thread-pool-cpp) - under the MIT License and a seperate custom license for MPMCBoundedQueue.
