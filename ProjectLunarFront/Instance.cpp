@@ -9,19 +9,19 @@ namespace {
 		char const* what() const noexcept override { return "Socket disconnected when waiting for contents"; }
 	};
 
-	// Blocking
 	unsigned char getchar(shared_ptr<TcpSocket> socket) {
 		unsigned char c = 0;
 		size_t i = 0;
-		while (i <= 0) {
-			auto stat = socket->receive(&c, 1, i);
-			if (!(stat == Socket::Done||stat==Socket::NotReady))
-				throw DisconnectedException();
-			sleep(milliseconds(1));
+
+		Socket::Status stat;
+		while ((stat = socket->receive(&c, 1, i)) != Socket::Disconnected&&stat != Socket::Error && i <= 0) {
+			if (stat == Socket::NotReady || stat == Socket::Partial)
+				sleep(milliseconds(2));
+			i = 0;
 		}
-		//#ifndef DISABLE_ALL_LOGS
-		//		putchar(c);
-		//#endif
+		if (stat == Socket::Disconnected || stat == Socket::Error)
+			throw DisconnectedException();
+
 		return c;
 	}
 
@@ -32,7 +32,7 @@ void Instance::start(Instance::Config&& conf) {
 	mlog << "Server Starting..." << dlog;
 
 	port = conf.port;
-	
+
 	mlog << "HTTP Port: " << port << ", HTTPS Turned Off" << dlog;
 	mlog << "IPv4 Listening: " << (true ? "On" : "Off") << ", IPv6 Listening: " << (false ? "On" : "Off") << '\n' << dlog;
 
@@ -43,6 +43,8 @@ void Instance::start(Instance::Config&& conf) {
 		listener->listen(port);
 		_HTTPListener(listener);
 	});
+
+	maintainer = make_shared<thread>(&Instance::_maintainer, this);
 }
 
 
@@ -57,6 +59,8 @@ void Instance::stop() {
 
 	if (httpListener && httpListener->joinable())
 		httpListener->join();
+	if (maintainer&&maintainer->joinable())
+		maintainer->join();
 
 	sockets.clear();
 	httpListener = nullptr;
@@ -69,7 +73,7 @@ void Instance::_maintainer() {
 		this_thread::sleep_for(chrono::milliseconds(300));
 		queueLock.lock();
 		for (auto i = sockets.begin(); i != sockets.end();)
-			if (!get<2>(*i)) {
+			if (!(*get<2>(*i))) {
 				if (get<1>(*i)->joinable())
 					get<1>(*i)->join();
 				i = sockets.erase(i);

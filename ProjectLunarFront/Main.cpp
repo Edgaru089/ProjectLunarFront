@@ -40,12 +40,12 @@ void sigintHandler(int signal) {
 
 int main(int argc, char* argv[]) try {
 	// Open a binary output stream for logs
-	time_t curtime = time(NULL);
+	/*time_t curtime = time(NULL);
 	wchar_t buffer[64] = {};
 	char signature[] = u8"\ufeff"; // BOM in UTF-8; "signature"
 	wcsftime(buffer, 63, L"logs/%Y-%m-%d-%H.%M.%S.log", localtime(&curtime));
 	OPEN_IFSTREAM_WSTR(logout, buffer, ofstream::binary);
-	logout.write(signature, sizeof(signature) - 1);
+	logout.write(signature, sizeof(signature) - 1);*/
 
 #if (defined WIN32) || (defined _WIN32)
 	locale::global(locale("", LC_CTYPE));
@@ -54,11 +54,11 @@ int main(int argc, char* argv[]) try {
 	setlocale(LC_CTYPE, "zh_CN.utf8");
 #endif
 	dlog.addOutputStream(wcout);
-	dlog.addOutputHandler([&](const wstring& str) {
+	/*dlog.addOutputHandler([&](const wstring& str) {
 		string u8str = wstringToUtf8(str) + "\r\n";
 		logout.write(u8str.data(), u8str.size());
 		logout.flush();
-	});
+	});*/
 
 	running = true;
 	stopped = false;
