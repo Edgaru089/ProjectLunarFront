@@ -4,7 +4,7 @@ A simple online judge system indended to be used under a local and safe network,
 
 简易的在线测评系统，目标是在安全的局域网中使用。好大的一个坑啊。
 
-LunarPhase框架被大量修改以适应SFML，添加了高效的线程池，但还是那么低效。
+LunarPhase框架被大量修改以适应SFML，删掉了HTTPS和IPv6等等SFML不支持的功能，但还是那么低效。
 
 License: MIT
 
