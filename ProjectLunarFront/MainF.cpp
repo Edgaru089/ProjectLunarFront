@@ -7,7 +7,6 @@ const int majorVersion = MAJORVER, minorVersion = MINORVER, patchVersion = PATCH
 
 const char completeServerName[] = FULL_SERVER_NAME;
 
-extern tp::ThreadPool threadPool;
 Config config;
 
 // from Uuid.hpp
@@ -175,9 +174,26 @@ map<string, string> decodeCookieSequence(string body) {
 	return ans;
 }
 
+string readFileText(const wstring& filename) {
+	ifstream file;
+	OPEN_FSTREAM_WSTR(file, filename, ifstream::in);
+	if (!file)
+		return string();
+
+	// Get the file size
+	file.ignore(numeric_limits<streamsize>::max());
+	size_t fileSize = (size_t)file.gcount();
+	file.seekg(0, ifstream::beg);
+
+	// Read
+	string res(fileSize, '\0');
+	file.read(res.data(), fileSize);
+	return res;
+}
+
 string readFileBinary(const wstring& filename) {
 	ifstream file;
-	OPEN_IFSTREAM_WSTR(file, filename, ifstream::binary);
+	OPEN_FSTREAM_WSTR(file, filename, ifstream::binary);
 	if (!file)
 		return string();
 
@@ -202,7 +218,7 @@ string readFileBinaryCached(const wstring& filename) {
 			i->second.first = chrono::steady_clock::now();
 
 		ifstream file;
-		OPEN_IFSTREAM_WSTR(file, filename, ifstream::binary);
+		OPEN_FSTREAM_WSTR(file, filename, ifstream::binary);
 		if (!file)
 			return string();
 
@@ -216,6 +232,28 @@ string readFileBinaryCached(const wstring& filename) {
 		file.read(res.data(), fileSize);
 	}
 	return i->second.second;
+}
+
+bool writeFileText(const wstring& filename, const string& contents) {
+	ofstream fout;
+	OPEN_FSTREAM_WSTR(fout, filename, ofstream::out);
+	if (!fout)
+		return false;
+	fout.write(contents.c_str(), contents.size());
+	fout.flush();
+	fout.close();
+	return true;
+}
+
+bool writeFileBinary(const wstring& filename, const string& contents) {
+	ofstream fout;
+	OPEN_FSTREAM_WSTR(fout, filename, ofstream::binary);
+	if (!fout)
+		return false;
+	fout.write(contents.c_str(), contents.size());
+	fout.flush();
+	fout.close();
+	return true;
 }
 
 string toUppercase(const string& str) {

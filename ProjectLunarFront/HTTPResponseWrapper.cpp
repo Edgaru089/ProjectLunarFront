@@ -67,7 +67,7 @@ void HTTPResponseShort::send(shared_ptr<TcpSocket> socket) {
 
 void HTTPResponseFile::send(shared_ptr<TcpSocket> socket) {
 
-	OPEN_IFSTREAM_WSTR(file, filename, ifstream::in | ifstream::binary);
+	OPEN_FSTREAM_WSTR(file, filename, ifstream::in | ifstream::binary);
 
 	// Return 404 Not Found if the stream was not opened
 	if (!file) {
@@ -105,7 +105,7 @@ void HTTPResponseFile::send(shared_ptr<TcpSocket> socket) {
 	while (!file.eof()) {
 		file.read(buffer, bufferSize);
 		if (file.gcount() > 0)
-			while ((socket->send(buffer, file.gcount())) != Socket::Disconnected);
+			socket->send(buffer, file.gcount());
 	}
 
 	delete[] buffer;

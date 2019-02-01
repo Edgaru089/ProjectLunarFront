@@ -155,21 +155,18 @@
     <ClInclude Include="SFNUL\HTTP.hpp" />
     <ClInclude Include="StringDatabase.hpp" />
     <ClInclude Include="StringParser.hpp" />
-    <ClInclude Include="thread_pool\thread_pool.hpp" />
-    <ClInclude Include="thread_pool\thread_pool\fixed_function.hpp" />
-    <ClInclude Include="thread_pool\thread_pool\mpmc_bounded_queue.hpp" />
-    <ClInclude Include="thread_pool\thread_pool\thread_pool.hpp" />
-    <ClInclude Include="thread_pool\thread_pool\thread_pool_options.hpp" />
-    <ClInclude Include="thread_pool\thread_pool\worker.hpp" />
     <ClInclude Include="Version.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="HTTPResponseWrapper.cpp" />
     <ClCompile Include="Instance.cpp" />
+    <ClCompile Include="JudgeRecord.cpp" />
     <ClCompile Include="JudgeWorker.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainF.cpp" />
+    <ClCompile Include="Problem.cpp" />
     <ClCompile Include="SFNUL\HTTP.cpp" />
+    <ClCompile Include="StringDatabase.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

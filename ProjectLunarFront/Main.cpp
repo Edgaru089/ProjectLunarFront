@@ -1,6 +1,11 @@
 #include "Main.hpp"
 #include "Instance.hpp"
 
+#include "JudgeWorker.hpp"
+#include "JudgeRecord.hpp"
+#include "StringDatabase.hpp"
+#include "Problem.hpp"
+
 Log dlog;
 ofstream logout;
 
@@ -44,7 +49,7 @@ int main(int argc, char* argv[]) try {
 	wchar_t buffer[64] = {};
 	char signature[] = u8"\ufeff"; // BOM in UTF-8; "signature"
 	wcsftime(buffer, 63, L"logs/%Y-%m-%d-%H.%M.%S.log", localtime(&curtime));
-	OPEN_IFSTREAM_WSTR(logout, buffer, ofstream::binary);
+	OPEN_FSTREAM_WSTR(logout, buffer, ofstream::binary);
 	logout.write(signature, sizeof(signature) - 1);*/
 
 #if (defined WIN32) || (defined _WIN32)
@@ -68,14 +73,56 @@ int main(int argc, char* argv[]) try {
 	signal(SIGINT, sigintHandler);
 	signal(SIGTERM, sigintHandler);
 #endif
-
+	/*
 	Instance instance;
+
+	// Register routes here
+	instance.registerRouteRule("/static/.*", ".*", ROUTER(req){
+		return file(req.GetURI().substr(1));
+	});
+
+
+
 	instance.start(Instance::Config{});
+	*/
+//	while (running)
+//		this_thread::sleep_for(chrono::milliseconds(50));
 
-	while (running)
-		this_thread::sleep_for(chrono::milliseconds(50));
+	string word;
+	while (cin >> word && running) {
+		if (word == "stop")
+			break;
+		else if (word == "load") {
+			stringDatabase.initializeWithFolder("objects");
+			judgeWorker.launch(1);
 
-	instance.stop();
+			sleep(milliseconds(500));
+
+			wstring str;
+			cout << "problem db: ";
+			wcin >> str;
+			problemDatabase.loadFromFile(str);
+
+			cout << "complete." << endl;
+		} else if (word == "judge") {
+			int id;
+			wstring str;
+			cout << "problem id: ";
+			cin >> id;
+			cout << "code file: ";
+			wcin >> str;
+
+			cout << "handing in..." << endl;
+			judgeRecordDatabase.handInCode(0, id, readFileText(str), true);
+
+			cout << "complete." << endl;
+		}
+	}
+
+	running = false;
+
+	//instance.stop();
+	judgeWorker.stop();
 
 	stopped = true;
 

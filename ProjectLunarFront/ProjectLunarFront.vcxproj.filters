@@ -22,12 +22,6 @@
     <Filter Include="LunarPhase\SFNUL">
       <UniqueIdentifier>{bd3e38d4-de75-4a3a-94ed-d474f40fc8e3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="LunarPhase\ThreadPool">
-      <UniqueIdentifier>{ede5f834-5602-4bea-a47a-5958e28e84c9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="LunarPhase\ThreadPool\Impl">
-      <UniqueIdentifier>{a0c404e5-3b47-436a-b834-3c8db0324479}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HTTPParser.hpp">
@@ -75,24 +69,6 @@
     <ClInclude Include="SFNUL\HTTP.hpp">
       <Filter>LunarPhase\SFNUL</Filter>
     </ClInclude>
-    <ClInclude Include="thread_pool\thread_pool.hpp">
-      <Filter>LunarPhase\ThreadPool</Filter>
-    </ClInclude>
-    <ClInclude Include="thread_pool\thread_pool\thread_pool.hpp">
-      <Filter>LunarPhase\ThreadPool\Impl</Filter>
-    </ClInclude>
-    <ClInclude Include="thread_pool\thread_pool\worker.hpp">
-      <Filter>LunarPhase\ThreadPool\Impl</Filter>
-    </ClInclude>
-    <ClInclude Include="thread_pool\thread_pool\thread_pool_options.hpp">
-      <Filter>LunarPhase\ThreadPool\Impl</Filter>
-    </ClInclude>
-    <ClInclude Include="thread_pool\thread_pool\mpmc_bounded_queue.hpp">
-      <Filter>LunarPhase\ThreadPool\Impl</Filter>
-    </ClInclude>
-    <ClInclude Include="thread_pool\thread_pool\fixed_function.hpp">
-      <Filter>LunarPhase\ThreadPool\Impl</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="HTTPResponseWrapper.cpp">
@@ -112,6 +88,15 @@
     </ClCompile>
     <ClCompile Include="SFNUL\HTTP.cpp">
       <Filter>LunarPhase\SFNUL</Filter>
+    </ClCompile>
+    <ClCompile Include="Problem.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="StringDatabase.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="JudgeRecord.cpp">
+      <Filter>Data</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

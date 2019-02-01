@@ -21,6 +21,7 @@
 #include <atomic>
 #include <list>
 #include <climits>
+#include <queue>
 #include "SFNUL/HTTP.hpp"
 #include <SFML/System.hpp>
 #include <SFML/Network.hpp>
@@ -28,6 +29,7 @@
 #ifdef _WIN32
 #define NOMINMAX
 #include <windows.h>
+#define OS_WINDOWS
 #endif
 
 using namespace std;
@@ -60,10 +62,12 @@ printf("\n"); }while(false)
 
 // ifstream::open(const wstring& path, flags) is a Windows extension, not a standard
 #if (defined _WIN32) || (defined WIN32)
-#define OPEN_IFSTREAM_WSTR(stream, wstrpath, flags) stream.open(wstrpath, flags);
+#define OPEN_FSTREAM_WSTR(stream, wstrpath, flags) stream.open(wstrpath, flags);
 #else
-#define OPEN_IFSTREAM_WSTR(stream, wstrpath, flags) stream.open(wstringToUtf8(wstrpath), flags);
+#define OPEN_FSTREAM_WSTR(stream, wstrpath, flags) stream.open(wstringToUtf8(wstrpath), flags);
 #endif
+
+#define fs filesystem
 
 #include "Version.hpp"
 
@@ -77,21 +81,33 @@ map<string, string> decodeFormUrlEncoded(string body);
 string encodeCookieSequence(const vector<pair<string, string>>& cookies);
 map<string, string> decodeCookieSequence(string body);
 
+string readFileText(const wstring& filename);
 string readFileBinary(const wstring& filename);
 string readFileBinaryCached(const wstring& filename);
+
+bool writeFileText(const wstring& filename, const string& contents);
+bool writeFileBinary(const wstring& filename, const string& contents);
 
 string toUppercase(const string& str);
 
 string generateCookie(int length = 24);
+
+class NotImplementedException :public exception {
+public:
+	NotImplementedException() { contents = "NotImplementedException: an unknown function not implemented"; }
+	NotImplementedException(const string& funcName) { contents = "NotImplementedException: function \"" + funcName + "\" not implemented"; }
+	const char* what() const noexcept override { return contents.c_str(); }
+private:
+	string contents;
+};
 
 //#define DISABLE_ALL_LOGS
 //#define USE_WCOUT_AS_LOG
 #include "LogSystem.hpp"
 #include "Uuid.hpp"
 #include "Config.hpp"
-#include "thread_pool/thread_pool.hpp"
+#include "Lockable.hpp"
 
-extern tp::ThreadPool threadPool;
 extern Config config;
 
 #ifndef _WIN32

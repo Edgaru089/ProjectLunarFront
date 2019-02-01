@@ -17,18 +17,20 @@ public:
 		string line, mark, cont;
 		this->data.clear();
 		ifstream file;
-		OPEN_IFSTREAM_WSTR(file, filename, ifstream::in);
+		OPEN_FSTREAM_WSTR(file, filename, ifstream::in);
 		if (file.fail())
 			return false;
 		while (!file.eof()) {
 			getline(file, line);
-			if (mark[0] == '#')
+			if (line[0] == '#')
 				continue;
 			size_t pos = line.find('=');
 			if (pos == string::npos)
 				continue;
 			mark = line.substr(0, pos);
 			cont = line.substr(pos + 1, line.length() - pos - 1);
+			if (cont.back() == '\r') // Windows line-ending
+				cont.pop_back();
 			this->data[mark] = cont;
 		}
 		return true;
@@ -68,6 +70,7 @@ public:
 
 	const string& getTempDir() { return tempDir; }
 	const string& getHostRegex() { return hostRegex; }
+	const string& getCppCompiler() { return cppCompiler; }
 	int getListenPort() { return listenPort; }
 
 private:
@@ -81,7 +84,7 @@ private:
 
 	string tempDir = "temp/";
 	string hostRegex = ".*";
-	string cppCompiler = "g++ %NAME.cpp -o %NAME.exe";
+	string cppCompiler = "g++ %CODE -o %EXE";
 	int listenPort;
 };
 

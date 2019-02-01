@@ -13,31 +13,53 @@ public:
 		Compiling,
 		Running,
 		Accepted,
-		FailedToRun,
 		WrongAnswer,
 		TimeLimitExceeded,
 		MemoryLimitExceeded,
+		RuntimeError,
+		CompileError,
+		FailedToRun,
 		UnknownError,
 	};
 
-	void judge();
+	struct DataPoint {
+		string judgeMessage;
+		State state;
+		int maxscore, score;
+		int memUsedKb, timeUsedMs;
+	};
 
-	int recordId, probId, userId;
+	int id;
+	int probId, userId;
 	Uuid codeStrDBId;
+
 	State state;
+	string compileMessage;
+	vector<DataPoint> points;
+	
+	// sum of all points[].maxscore and points[].score, respectively
+	int maxscore, score;
 };
 
 class JudgeRecordDatabase :public Lockable {
 public:
 
-	void saveToFile(const string& filename) {
-		lock();
-		mlog << "[JudgeRecordDatabase] Saving judge records to " << filename << dlog;
+	void loadFromFile(const wstring& filename);
 
-		mlog << "[JudgeRecordDatabase] File saved." << dlog;
-		unlock();
-	}
+	void saveToFile(const wstring& filename);
+
+	int handInCode(int userId, int probId, const string& code, bool wantJudgeNow = true);
+
+	// Not thread-safe; this->lock when reading
+	auto& getWaitingQueue() { return waitingQueue; }
+
+	// Not thread-safe; this->lock when reading
+	auto& getRecords() { return records; }
 
 private:
-	map<Uuid, JudgeRecord::Ptr> records;
+	int maxid;
+	map<int, JudgeRecord::Ptr> records;
+	deque<int> waitingQueue;
 };
+
+extern JudgeRecordDatabase judgeRecordDatabase;
