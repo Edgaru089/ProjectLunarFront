@@ -135,7 +135,7 @@ private:
 	int code;
 };
 
-void setFrameFile(const wstring& filename, const string& bodyFlag = "%BODY%");
+void setFrameFile(const string& filename, const string& bodyFlag = "%BODY%");
 
 inline HTTPResponseWrapper::Ptr htmltext(const wstring& str, bool hasFrame = true, const vector<pair<string, string>>& replaces = {})
 { return make_shared<HTTPResponseShort>(str, hasFrame, replaces); }

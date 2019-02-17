@@ -38,13 +38,13 @@ fs::path JudgeWorker::compile(shared_ptr<JudgeRecord> record, const wstring& tar
 	wstring command = StringParser::replaceSubStringW(
 		utf8ToWstring(config.getCppCompiler()),
 		  { { L"%CODE", L'"' + srcCodeFile.native() + L'"' },
-		  { L"%EXE", L'"' + srcExeFile.native() + L'"' } }) + L" > \"" + compileOut.native() + L'"';
+		  { L"%EXE", L'"' + srcExeFile.native() + L'"' } }) + L" 1> \"" + compileOut.native() + L"\" 2>&1";
 	retval = _wsystem(command.c_str());
 #else
 	string command = StringParser::replaceSubString(
 		config.getCppCompiler(),
 			{ { "%CODE", srcCodeFile.generic_u8string() },
-			{ "%EXE", srcExeFile.generic_u8string() } }) + " > \"" + compileOut.native() + '"';
+			{ "%EXE", srcExeFile.generic_u8string() } }) + " &> \"" + compileOut.native() + '"';
 	retval = system(command.c_str());
 #endif
 
@@ -63,7 +63,7 @@ void JudgeWorker::judge(JudgeRecord::Ptr record) {
 	mlog << "[JudgeWorker::judge] Judging record " << record->id << " starting..." << dlog;
 
 	// make sure the tempdir exists
-	fs::path tempdir = config.getTempDir() + generateCookie(16);
+	fs::path tempdir = config.getTempDir() + generateCookie(24);
 	if (!fs::exists(tempdir) || !fs::is_directory(tempdir)) {
 		fs::remove(tempdir);
 		fs::create_directory(tempdir);
@@ -250,7 +250,7 @@ void JudgeWorker::judgeOneSet(const fs::path& exe, const fs::path& workingDir, c
 	ASSERT(fs::exists(exe) && fs::is_regular_file(exe));
 
 	// prepare variables
-	wstring tempDir = utf8ToWstring(config.getTempDir());
+	wstring tempDir = exe.parent_path().native();
 	fs::path stdIn = StringParser::toStringF(prob.inDataPathFormat.c_str(), id), stdOut = StringParser::toStringF(prob.outDataPathFormat.c_str(), id);
 	int seqid = id - prob.dataIdFirst;
 

@@ -187,8 +187,8 @@ HTTPResponseWrapper::Ptr Instance::_dispatchRequest(HTTPRequest& request) {
 	// Dispatch the reqeust
 	// HACK Assume all non-POST requests as GET ones
 	auto& handlers = (request.GetMethod() == "POST" ? postRoutes : getRoutes);
-	for (auto&[uriRegex, hostRegex, handler] : handlers)
-		if (regex_match(uri, uriRegex) && regex_match(host, hostRegex))
+	for (auto&[uriTarget, hostTarget, handler] : handlers)
+		if ((uri.size() >= uriTarget.size() && uri.substr(0, uriTarget.size()) == uriTarget) && host == hostTarget)
 			return handler(request);
 
 	// Return a 404 Not Found if no handler was matched

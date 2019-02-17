@@ -151,10 +151,14 @@
     <ClInclude Include="LogSystem.hpp" />
     <ClInclude Include="Main.hpp" />
     <ClInclude Include="Config.hpp" />
+    <ClInclude Include="Page.hpp" />
+    <ClInclude Include="PageStatus.hpp" />
+    <ClInclude Include="PageStatusDetail.hpp" />
     <ClInclude Include="Problem.hpp" />
     <ClInclude Include="SFNUL\HTTP.hpp" />
     <ClInclude Include="StringDatabase.hpp" />
     <ClInclude Include="StringParser.hpp" />
+    <ClInclude Include="User.hpp" />
     <ClInclude Include="Version.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -164,8 +168,10 @@
     <ClCompile Include="JudgeWorker.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainF.cpp" />
+    <ClCompile Include="Page.cpp" />
     <ClCompile Include="Problem.cpp" />
     <ClCompile Include="SFNUL\HTTP.cpp" />
+    <ClCompile Include="SHA-256.cpp" />
     <ClCompile Include="StringDatabase.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

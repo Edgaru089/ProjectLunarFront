@@ -59,7 +59,7 @@ public:
 
 		setStringIfNotEmpty(tempDir, file.getContent("temp_dir"));
 		setStringIfNotEmpty(listenPortStr, file.getContent("port"));
-		setStringIfNotEmpty(hostRegex, file.getContent("hostRegex"));
+		setStringIfNotEmpty(hostname, file.getContent("hostname"));
 		setStringIfNotEmpty(cppCompiler, file.getContent("cpp_compiler"));
 
 		// if tempDir does not exist, create it
@@ -69,7 +69,7 @@ public:
 	}
 
 	const string& getTempDir() { return tempDir; }
-	const string& getHostRegex() { return hostRegex; }
+	const string& getHostname() { return hostname; }
 	const string& getCppCompiler() { return cppCompiler; }
 	int getListenPort() { return listenPort; }
 
@@ -83,7 +83,7 @@ private:
 	OptionFile file;
 
 	string tempDir = "temp/";
-	string hostRegex = ".*";
+	string hostname = "127.0.0.1:5000";
 	string cppCompiler = "g++ %CODE -o %EXE";
 	int listenPort;
 };

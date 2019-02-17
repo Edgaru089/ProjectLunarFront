@@ -5,6 +5,9 @@
 #include "JudgeRecord.hpp"
 #include "StringDatabase.hpp"
 #include "Problem.hpp"
+#include "Page.hpp"
+#include "PageStatus.hpp"
+#include "PageStatusDetail.hpp"
 
 Log dlog;
 ofstream logout;
@@ -73,18 +76,28 @@ int main(int argc, char* argv[]) try {
 	signal(SIGINT, sigintHandler);
 	signal(SIGTERM, sigintHandler);
 #endif
-	/*
+
+	mlog << completeServerNameEx << dlog;
+
+
 	Instance instance;
 
+	setFrameFile(StringParser::replaceSubString(readFileText(L"html/frame.html"), { { "%FOOTER%", completeServerNameEx } }));
+
 	// Register routes here
-	instance.registerRouteRule("/static/.*", ".*", ROUTER(req){
+	instance.registerRouteRule("/static/", config.getHostname(), ROUTER(req) {
 		return file(req.GetURI().substr(1));
 	});
 
-
+	instance.registerRouteRule("/sanae", config.getHostname(), ROUTER(req) {
+		return htmltext("Kochiya Sanae");
+	});
+	pageManager.insertPage(make_shared<PageStatus>());
+	pageManager.insertPage(make_shared<PageStatusDetail>());
+	pageManager.registerRoutes(instance);
 
 	instance.start(Instance::Config{});
-	*/
+
 //	while (running)
 //		this_thread::sleep_for(chrono::milliseconds(50));
 

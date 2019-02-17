@@ -77,13 +77,17 @@ wstring ansiToWstring(const string& source);
 
 string decodePercentEncoding(const string& source);
 string encodePercent(const string& source, bool encodeSlash = false);
-map<string, string> decodeFormUrlEncoded(string body);
+void decodeFormUrlEncoded(string body, map<string, string>& result);
 string encodeCookieSequence(const vector<pair<string, string>>& cookies);
 map<string, string> decodeCookieSequence(string body);
 
+void decodeCookieAndUriParam(const HTTPRequest& request, map<string, string>& cookies, map<string, string>& uriParams);
+
+string escapeTextHTML(const string& source);
+
 string readFileText(const wstring& filename);
 string readFileBinary(const wstring& filename);
-string readFileBinaryCached(const wstring& filename);
+const string& readFileBinaryCached(const wstring& filename);
 
 bool writeFileText(const wstring& filename, const string& contents);
 bool writeFileBinary(const wstring& filename, const string& contents);
@@ -100,6 +104,8 @@ public:
 private:
 	string contents;
 };
+
+string getUserNavString(const map<string, string>& cookies);
 
 //#define DISABLE_ALL_LOGS
 //#define USE_WCOUT_AS_LOG

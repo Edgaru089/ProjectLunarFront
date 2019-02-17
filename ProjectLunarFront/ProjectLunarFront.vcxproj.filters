@@ -22,6 +22,12 @@
     <Filter Include="LunarPhase\SFNUL">
       <UniqueIdentifier>{bd3e38d4-de75-4a3a-94ed-d474f40fc8e3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Web\Base">
+      <UniqueIdentifier>{7488610e-33d6-466f-a812-f65347706112}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility">
+      <UniqueIdentifier>{c00ed7ac-c6e1-4a9e-b954-fcf742f38a77}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HTTPParser.hpp">
@@ -69,6 +75,18 @@
     <ClInclude Include="SFNUL\HTTP.hpp">
       <Filter>LunarPhase\SFNUL</Filter>
     </ClInclude>
+    <ClInclude Include="Page.hpp">
+      <Filter>Web\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="PageStatus.hpp">
+      <Filter>Web</Filter>
+    </ClInclude>
+    <ClInclude Include="User.hpp">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="PageStatusDetail.hpp">
+      <Filter>Web</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="HTTPResponseWrapper.cpp">
@@ -97,6 +115,12 @@
     </ClCompile>
     <ClCompile Include="JudgeRecord.cpp">
       <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="Page.cpp">
+      <Filter>Web\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="SHA-256.cpp">
+      <Filter>Utility</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -200,8 +200,8 @@ void HTTPResponseRedirection::send(shared_ptr<TcpSocket> socket) {
 }
 
 
-void setFrameFile(const wstring& filename, const string& bodyFlag) {
-	frameFileContents = readFileBinaryCached(filename);
+void setFrameFile(const string& contents, const string& bodyFlag) {
+	frameFileContents = contents;
 	frameBodyFlag = bodyFlag;
 }
 

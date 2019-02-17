@@ -1,11 +1,24 @@
 
 #include "Main.hpp"
 
+#include "BuildCounter.hpp"
+
+#define PROJECT_NAME "Project LunarFront"
+#define PROJECT_STAGE "Alpha"
+#define _FULL_SERVER_NAME(build) "Project-LunarFront/0.0.0.-Alpha"
+#define FULL_SERVER_NAME _FULL_SERVER_NAME(BUILD)
+
+#define MAJORVER 0
+#define MINORVER 0
+#define PATCHVER 0
+#define BUILDVER BUILD
+
 
 const char projectName[] = PROJECT_NAME, stage[] = PROJECT_STAGE;
 const int majorVersion = MAJORVER, minorVersion = MINORVER, patchVersion = PATCHVER, buildVersion = BUILDVER;
 
 const char completeServerName[] = FULL_SERVER_NAME;
+const string completeServerNameEx = StringParser::toStringF(PROJECT_NAME " " PROJECT_STAGE " Version %d.%d.%d Build %d", majorVersion, minorVersion, patchVersion, buildVersion);
 
 Config config;
 
@@ -42,6 +55,7 @@ namespace {
 	// A cache container for readFileBinaryCached
 	map<wstring, pair<chrono::steady_clock::time_point, string>> fileCache;
 	const auto reloadCachedFileDuration = chrono::seconds(3);
+	string cachedEmptyString;
 }
 
 #ifdef _WIN32
@@ -127,9 +141,7 @@ string encodePercent(const string& source, bool encodeSlash) {
 	return res;
 }
 
-map<string, string> decodeFormUrlEncoded(string body) {
-	map<string, string> ans;
-
+void decodeFormUrlEncoded(string body, map<string, string>& result) {
 	int i = 0;
 	while (i < body.size()) {
 		pair<string, string> cur;
@@ -139,10 +151,8 @@ map<string, string> decodeFormUrlEncoded(string body) {
 		while (body[i] == '=') i++;
 		while (i < body.size() && body[i] != '&')
 			cur.second.push_back(body[i++]);
-		ans.insert(make_pair(decodePercentEncoding(cur.first), decodePercentEncoding(cur.second)));
+		result.insert(make_pair(decodePercentEncoding(cur.first), decodePercentEncoding(cur.second)));
 	}
-
-	return ans;
 }
 
 string encodeCookieSequence(const vector<pair<string, string>>& cookies) {
@@ -172,6 +182,15 @@ map<string, string> decodeCookieSequence(string body) {
 	}
 
 	return ans;
+}
+
+void decodeCookieAndUriParam(const HTTPRequest& request, map<string, string>& cookies, map<string, string>& uriParams) {
+	const string& uri = request.GetURI();
+	if (size_t pos = uri.find_first_of('?'); pos != string::npos) {
+	// has a uri param-list, parse it
+		decodeFormUrlEncoded(uri.substr(pos + 1), uriParams);
+	}
+	decodeCookieSequence(request.GetHeaderValue("Cookie"));
 }
 
 string readFileText(const wstring& filename) {
@@ -208,7 +227,7 @@ string readFileBinary(const wstring& filename) {
 	return res;
 }
 
-string readFileBinaryCached(const wstring& filename) {
+const string& readFileBinaryCached(const wstring& filename) {
 	auto i = fileCache.find(filename);
 	if (i == fileCache.end() || chrono::steady_clock::now() - i->second.first > reloadCachedFileDuration) {
 		// Load or reload the file
@@ -220,7 +239,7 @@ string readFileBinaryCached(const wstring& filename) {
 		ifstream file;
 		OPEN_FSTREAM_WSTR(file, filename, ifstream::binary);
 		if (!file)
-			return string();
+			return cachedEmptyString;
 
 		// Get the file size
 		file.ignore(numeric_limits<streamsize>::max());
@@ -278,3 +297,18 @@ string generateCookie(int length) {
 	}
 	return str;
 }
+
+string getUserNavString(const map<string, string>& cookies) {
+	// TODO: getUserNavString()
+	return "TODO: getUserNavString()";
+}
+
+string escapeTextHTML(const string& source) {
+	return StringParser::replaceSubString(source, {
+		{"&","&amp;"},
+		{"\"","&quot;"},
+		{"\'","&apos;"},
+		{"<","&lt;"}, {">","&gt;"}, {"!","&excl;"}, {"\t","    "}
+	});
+}
+

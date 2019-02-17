@@ -37,15 +37,16 @@ public:
 
 public:
 
-	typedef function<HTTPResponseWrapper::Ptr(HTTPRequest)> RouteHandlerFunction;
+	typedef function<HTTPResponseWrapper::Ptr(const HTTPRequest&)> RouteHandlerFunction;
 
-	// Calls the callback if the two regex are both matched; calls the first one if there's multiple matches
-	// RouteHandlerFunction prarmater is the HTTP requset, with URI percent-encoded
-	void registerRouteRule(string regexURI, string regexHostnames, RouteHandlerFunction handler, RequestMethod request = Get) {
+	// Calls the callback if the parameter uriPrefix is a prefix of URI and hostame equals the host;
+	//     calls the first one if there's multiple matches
+	// RouteHandlerFunction parameter is the HTTP requset, with URI percent-encoded
+	void registerRouteRule(const string& uriPrefix, const string& hostname, RouteHandlerFunction handler, RequestMethod request = Get) {
 		if (request == Get)
-			getRoutes.emplace_back(regex(regexURI), regex(regexHostnames), handler);
+			getRoutes.emplace_back(uriPrefix, hostname, handler);
 		else if (request == Post)
-			postRoutes.emplace_back(regex(regexURI), regex(regexHostnames), handler);
+			postRoutes.emplace_back(uriPrefix, hostname, handler);
 	}
 
 
@@ -63,7 +64,7 @@ private:
 	void _connectionHandler(shared_ptr<TcpSocket> socket, shared_ptr<atomic_bool> connected);
 
 	//TODO Use a better container than std::list and std::tuple
-	list<tuple<regex, regex, RouteHandlerFunction>> getRoutes, postRoutes;
+	list<tuple<string, string, RouteHandlerFunction>> getRoutes, postRoutes;
 	HTTPResponseWrapper::Ptr _dispatchRequest(HTTPRequest& request);
 
 	shared_ptr<thread> httpListener;

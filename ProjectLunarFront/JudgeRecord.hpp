@@ -3,6 +3,7 @@
 #include "Main.hpp"
 #include "Lockable.hpp"
 
+
 class JudgeRecord :public Lockable, public enable_shared_from_this<JudgeRecord> {
 public:
 
@@ -20,7 +21,10 @@ public:
 		CompileError,
 		FailedToRun,
 		UnknownError,
+		Count
 	};
+
+	static const string& getStatusString(State state);
 
 	struct DataPoint {
 		string judgeMessage;
@@ -33,12 +37,17 @@ public:
 	int probId, userId;
 	Uuid codeStrDBId;
 
+	// unix time
+	Uint64 submitUnixTime;
+
 	State state;
 	string compileMessage;
 	vector<DataPoint> points;
-	
+
 	// sum of all points[].maxscore and points[].score, respectively
 	int maxscore, score;
+
+	int maxTimeMs, maxMemoryKb;
 };
 
 class JudgeRecordDatabase :public Lockable {
@@ -50,6 +59,8 @@ public:
 
 	int handInCode(int userId, int probId, const string& code, bool wantJudgeNow = true);
 
+	void requestRejudge(int recordId, bool pushFront = false);
+
 	// Not thread-safe; this->lock when reading
 	auto& getWaitingQueue() { return waitingQueue; }
 
@@ -58,7 +69,7 @@ public:
 
 private:
 	int maxid;
-	map<int, JudgeRecord::Ptr> records;
+	map<int, JudgeRecord::Ptr, greater<int>> records;
 	deque<int> waitingQueue;
 };
 
